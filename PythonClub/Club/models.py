@@ -14,25 +14,26 @@ class Meeting(models.Model):
     class Meta: 
         db_table='meeting'
 class MeetingMinute(models.Model):
-    meeting_id=models.CharField(max_length=255)
+    #meeting_id=models.CharField(max_length=255)
     meeting_id=models.ForeignKey(Meeting, on_delete=models.DO_NOTHING)
-    attendance=models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    attendance=models.ManyToManyField(User, blank=True)
     #dateentered=models.DateField()
     #price=models.DecimalField(max_digits=6, decimal_places=2)       
     #productur1=models.URLField()
     #description=models.TextField()
     minutestext=models.TextField(null=True, blank=True)
-    def __str__(self):
-        return self.meeting_id
-
+    #def __str__(self):
+      #  return self.attendance
     class Meta:
         db_table='meetingminute'
+   
+        
 
 class Resource(models.Model):
     resource_name=models.CharField(max_length=255, null= True)
     resource_type=models.CharField(max_length=255, null= True)
     URL=models.URLField(null=True)
-    date_entered=models.DateField(null=True)
+    date_entered=models.DateField()
     user_id=models.ForeignKey(User, on_delete=models.CASCADE)
     description=models.TextField(null=True, blank=True)
     #product=models.ForeignKey(MeetingMinute, on_delete=models.CASCADE)
