@@ -2,6 +2,9 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from .models import Meeting, MeetingMinute, Resource, Event
 import datetime
+from .forms import MeetingForm
+from django.urls import reverse_lazy, reverse
+
 # Create your tests here.
 class MeetingTest(TestCase):
     def setUp(self):
@@ -47,4 +50,11 @@ class EventTest(TestCase):
         self.assertEqual(str(self.event), '1')
     
 
-  
+class New_Resource_Authentication_Test(TestCase):
+    def setUp(self):
+        self.test_user=User.objects.create_user(username='Gwen', password='@Soxsox123')
+        self.resource=Resource.objects.create(resource_name='Afghan Hound',resource_type='High Rank Dog Breed', user_id=self.test_user, date_entered=datetime.date(2021,5,15), URL='https://www.akc.org/dog-breeds/afghan-hound/', description="Afghan Hound – $7,000")
+
+    def test_redirect_if_not_logged_in(self):
+        response=self.client.get(reverse('resources'))
+        self.assertRedirects(response, '/accounts/login/?next=/Club/newmeeting/')
